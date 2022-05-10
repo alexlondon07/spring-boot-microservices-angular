@@ -20,3 +20,7 @@ zuul:
       path: /api/courses/**
       url: http://localhost:8081/courses/
       serviceId: course-service
+    exam-service:
+      path: /api/exams/**
+      url: http://localhost:8082/exams/
+      serviceId: exam-service

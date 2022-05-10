@@ -1,5 +1,8 @@
 package com.microservices.commonservice.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
@@ -9,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,12 +54,23 @@ public class CommonController<E, S extends CommonService<E>> {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody E entity) {
+    public ResponseEntity<?> save(@Valid @RequestBody E entity, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return this.validate(bindingResult);
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(entity));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody E entity) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.update(entity));
+    }
+
+    protected ResponseEntity<?> validate(BindingResult bindingResult) {
+        Map<String, Object> errors = new HashMap<>();
+        bindingResult.getFieldErrors().forEach(error -> {
+            errors.put(error.getField(), " El campo " + error.getField() + " " + error.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(errors);
     }
 }

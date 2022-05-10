@@ -1,0 +1,32 @@
+package com.microservices.examenservice.services;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.microservices.commonexam.models.entity.Exam;
+import com.microservices.commonexam.models.entity.Subject;
+import com.microservices.commonservice.service.CommonServiceImpl;
+import com.microservices.examenservice.models.repository.ExamRepository;
+import com.microservices.examenservice.models.repository.SubjectRepository;
+
+@Service
+public class ExamServiceImpl extends CommonServiceImpl<Exam, ExamRepository> implements ExamService {
+
+    @Autowired
+    private SubjectRepository subjectRepository;
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Exam> findByName(String name) {
+        return repository.findByName(name);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Subject> findAllSubjects() {
+        return (List<Subject>) subjectRepository.findAll();
+    }
+}

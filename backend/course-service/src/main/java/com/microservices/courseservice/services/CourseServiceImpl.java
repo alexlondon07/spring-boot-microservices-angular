@@ -10,5 +10,9 @@ import com.microservices.courseservice.models.repository.CourseRepository;
 public class CourseServiceImpl extends CommonServiceImpl<Course, CourseRepository> implements CourseService {
 
 
+    @Override
+    public Course findCourseByStudentId(Long id) {
+        return repository.findCourseByStudentId(id);
+    }
 }
 
