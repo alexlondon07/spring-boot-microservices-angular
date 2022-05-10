@@ -6,6 +6,9 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -27,6 +30,13 @@ public class ExamController extends CommonController<Exam, ExamService> {
 
     @Autowired
     private ExamService service;
+
+
+    @GetMapping("/page/{page}/{size}")
+    public Page<Exam> index(@PathVariable Integer page, @PathVariable Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return service.findAllPage(pageable);
+    }
 
     @PutMapping("/{id}/exam")
     public ResponseEntity<?> editExam(@Valid @RequestBody Exam exam, @PathVariable Long id,

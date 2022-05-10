@@ -1,12 +1,15 @@
 package com.microservices.commonstudent.models.entity;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -15,12 +18,21 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.Hibernate;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "students")
@@ -54,6 +66,10 @@ public class Student {
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Date updatedAt;
 
+    @Lob
+    @JsonIgnore
+    private byte[] image;
+
     @PrePersist
     public void prePersist() {
         createdAt = new Date();
@@ -63,4 +79,9 @@ public class Student {
     protected void onUpdate() {
         updatedAt = new Date();
     }
+
+    public Integer getImageHashCode() {
+        return this.image!=null ? Arrays.hashCode(this.image):null;
+    }
+
 }
