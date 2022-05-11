@@ -17,6 +17,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -52,6 +53,9 @@ public class Exam {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Subject subject;
+
+    @Transient
+    private boolean replied;
 
     @PrePersist
     public void prePersist() {

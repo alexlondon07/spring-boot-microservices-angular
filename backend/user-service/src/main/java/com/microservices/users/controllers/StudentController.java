@@ -6,10 +6,13 @@ import java.io.IOException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,5 +87,17 @@ public class StudentController extends CommonController<Student, StudentService>
             studentBD.setImage(file.getBytes());
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.update(studentBD));
+    }
+
+    @GetMapping("/{id}/uploads/image")
+    public ResponseEntity<?> viewImage(@PathVariable Long id) {
+        Student studentBD = service.findById(id);
+
+        Resource image = new ByteArrayResource(studentBD.getImage());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(image);
+
     }
 }
