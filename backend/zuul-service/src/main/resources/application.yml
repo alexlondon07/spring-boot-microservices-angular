@@ -24,3 +24,7 @@ zuul:
       path: /api/exams/**
       url: http://localhost:8082/exams/
       serviceId: exam-service
+    answer-service:
+      path: /api/answers/**
+      url: http://localhost:8083/answers/
+      serviceId: answer-service
