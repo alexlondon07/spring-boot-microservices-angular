@@ -11,7 +11,7 @@ public interface AnswerRepository extends CrudRepository<Answer, Long> {
             "JOIN FETCH q.exam e WHERE e.id=?1 AND e.id=?2")
     Iterable<Answer> findAnswerByStudentByExam(Long studentId, Long examId);
 
-    @Query("SELECT e.id FROM Answer a JOIN a.student s JOIN a.question q JOIN q.exam e " +
-            "WHERE s.id=?1 GROUP BY e.id")
+    @Query("select e.id from Answer a join a.student s join a.question q join q.exam e " +
+            "where s.id=?1 group by e.id")
     Iterable<Long> findExamsIdByWithAnswersByStudent(Long studentId);
 }

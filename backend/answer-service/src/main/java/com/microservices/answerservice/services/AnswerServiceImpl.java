@@ -21,11 +21,11 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public Iterable<Answer> findAnswerByStudentByExam(Long studentId, Long examId) {
-        return null;
+        return repository.findAnswerByStudentByExam(studentId, examId);
     }
 
     @Override
     public Iterable<Long> findExamsIdByWithAnswersByStudent(Long studentId) {
-        return null;
+        return repository.findExamsIdByWithAnswersByStudent(studentId);
     }
 }

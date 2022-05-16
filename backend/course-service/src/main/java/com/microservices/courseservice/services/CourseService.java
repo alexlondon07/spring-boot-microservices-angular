@@ -6,4 +6,7 @@ import com.microservices.courseservice.models.entity.Course;
 public interface CourseService extends CommonService<Course> {
 
     Course findCourseByStudentId(Long id);
+
+    Iterable<Long> getExamsIdsWithAnswersByStudentId(Long studentId);
+
 }

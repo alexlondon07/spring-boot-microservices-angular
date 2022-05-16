@@ -1,6 +1,8 @@
 package com.microservices.courseservice.controllers;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -84,6 +86,22 @@ public class CourseController extends CommonController<Course, CourseService> {
     @GetMapping("/student/{id}")
     public ResponseEntity<?> searchBtStudentId(@PathVariable Long id) {
         Course courseBD = service.findCourseByStudentId(id);
+
+        if (Objects.nonNull(courseBD)) {
+
+            List<Long> examsIds = (List<Long>) service.getExamsIdsWithAnswersByStudentId(id);
+
+            List<Exam> exams = courseBD.getExams()
+                    .stream()
+                    .map(exam -> {
+                        if (examsIds.contains(exam.getId())) {
+                            exam.setReplied(true);
+                        }
+                        return exam;
+                    }).collect(Collectors.toList());
+
+            courseBD.setExams(exams);
+        }
         return ResponseEntity.ok(courseBD);
     }
 }

@@ -15,11 +15,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,16 +42,19 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
+    @NotNull
+    @Size(min = 3, max = 90)
     private String name;
 
-    @NotEmpty
+    @NotNull
+    @Size(min = 5, max = 90)
     @Column(name = "last_name")
     private String lastName;
 
-    @NotEmpty
+    @NotNull
     @Email
     @Column(unique = true)
+    @Size(min = 5, max = 90)
     private String email;
 
     @Column(name = "created_At")

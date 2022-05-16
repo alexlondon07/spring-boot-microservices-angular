@@ -11,10 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 
 
 import com.microservices.commonexam.models.entity.Question;
@@ -48,4 +48,9 @@ public class Answer {
     @Column(name = "created_At")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = new Date();
+    }
 }
