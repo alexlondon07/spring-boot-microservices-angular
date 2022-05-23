@@ -2,10 +2,10 @@ package com.microservices.users.controllers;
 
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -39,6 +39,11 @@ public class StudentController extends CommonController<Student, StudentService>
 
     public StudentController(StudentService service) {
         this.service = service;
+    }
+
+    @GetMapping("/students-by-course")
+    public ResponseEntity<?> getStudentsByCourse(@RequestParam List<Long> ids) {
+        return ResponseEntity.ok(service.findAllById(ids));
     }
 
     @GetMapping("/page/{page}/{size}")
@@ -102,6 +107,5 @@ public class StudentController extends CommonController<Student, StudentService>
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(image);
-
     }
 }

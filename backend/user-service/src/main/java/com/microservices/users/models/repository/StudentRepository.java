@@ -9,7 +9,8 @@ import com.microservices.commonstudent.models.entity.Student;
 
 public interface StudentRepository extends PagingAndSortingRepository<Student, Long> {
 
-    @Query("select a from Student a where a.name like %?1% or a.lastName like %?1%")
-    public List<Student> findByNameAndLastName(String text);
+    @Query("select a from Student a where upper(a.name) like upper(concat('%', ?1, '%')) or " +
+            "upper(a.lastName) like upper(concat('%', ?1, '%'))")
+    List<Student> findByNameAndLastName(String text);
 
 }
