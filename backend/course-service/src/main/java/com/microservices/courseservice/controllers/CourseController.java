@@ -34,15 +34,16 @@ public class CourseController extends CommonController<Course, CourseService> {
     @GetMapping
     @Override
     public ResponseEntity<?> getAll() {
-        List<Course> courseList = ((List<Course>) this.service.findAll())
+        List<Course> courseList = ((List<Course>) service.findAll())
                 .stream()
-                .peek(course -> course.getCourseStudents().forEach(courseStudent -> {
-
-                    Student student = new Student();
-                    student.setId(courseStudent.getStudentId());
-                    course.addStudents(student);
-
-                })).collect(Collectors.toList());
+                .map(course -> {
+                    course.getCourseStudents().forEach(courseStudent -> {
+                        Student student = new Student();
+                        student.setId(courseStudent.getStudentId());
+                        course.addStudent(student);
+                    });
+                    return course;
+                }).collect(Collectors.toList());
 
         return ResponseEntity.ok().body(courseList);
     }
@@ -54,7 +55,7 @@ public class CourseController extends CommonController<Course, CourseService> {
                     course.getCourseStudents().forEach(courseStudent -> {
                         Student student = new Student();
                         student.setId(courseStudent.getStudentId());
-                        course.addStudents(student);
+                        course.addStudent(student);
                     });
                     return course;
                 });

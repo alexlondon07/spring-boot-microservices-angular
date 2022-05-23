@@ -31,7 +31,7 @@ public class StudentServiceImpl extends CommonServiceImpl<Student, StudentReposi
 
     @Override
     public void deleteCourseStudentById(Long id) {
-        courseFeignClient.deleteCourseStudentById(id);
+        courseFeignClient.deleteCourseByStudentId(id);
     }
 
     @Override

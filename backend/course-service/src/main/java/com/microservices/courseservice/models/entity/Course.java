@@ -1,5 +1,6 @@
 package com.microservices.courseservice.models.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -57,14 +58,14 @@ public class Course {
     @JsonIgnoreProperties(value = {"course"}, allowSetters = true)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "course", cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private List<CourseStudent> courseStudents;
+    private List<CourseStudent> courseStudents = new ArrayList<>();
 
     // @OneToMany(fetch = FetchType.LAZY)
     @Transient
-    private List<Student> students;
+    private List<Student> students = new ArrayList<>();;
 
     @OneToMany(fetch = FetchType.LAZY)
-    private List<Exam> exams;
+    private List<Exam> exams = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {
@@ -76,7 +77,7 @@ public class Course {
         updatedAt = new Date();
     }
 
-    public void addStudents(Student student) {
+    public void addStudent(Student student) {
         this.students.add(student);
     }
 
