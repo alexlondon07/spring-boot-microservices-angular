@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +22,7 @@ import com.microservices.commonexam.models.entity.Exam;
 import com.microservices.commonservice.controller.CommonController;
 import com.microservices.commonstudent.models.entity.Student;
 import com.microservices.courseservice.models.entity.Course;
+import com.microservices.courseservice.models.entity.CourseStudent;
 import com.microservices.courseservice.services.CourseService;
 
 import javax.validation.Valid;
@@ -30,8 +31,53 @@ import javax.validation.Valid;
 @RestController
 public class CourseController extends CommonController<Course, CourseService> {
 
-    @Autowired
-    private CourseService service;
+    @GetMapping
+    @Override
+    public ResponseEntity<?> getAll() {
+        List<Course> courseList = ((List<Course>) this.service.findAll())
+                .stream()
+                .peek(course -> course.getCourseStudents().forEach(courseStudent -> {
+
+                    Student student = new Student();
+                    student.setId(courseStudent.getStudentId());
+                    course.addStudents(student);
+
+                })).collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(courseList);
+    }
+
+    @GetMapping({"/page/{page}/{size}/with-students"})
+    public ResponseEntity<?> getAllPageable(@PathVariable Integer page, @PathVariable Integer size) {
+        Page<Course> coursesPage = this.service.findAllPage(PageRequest.of(page, size))
+                .map(course -> {
+                    course.getCourseStudents().forEach(courseStudent -> {
+                        Student student = new Student();
+                        student.setId(courseStudent.getStudentId());
+                        course.addStudents(student);
+                    });
+                    return course;
+                });
+
+        return ResponseEntity.ok().body(coursesPage);
+    }
+
+    @GetMapping({"/{id}"})
+    @Override
+    public ResponseEntity<?> show(@PathVariable Long id) {
+        Course course = this.service.findById(id);
+        if (!course.getCourseStudents().isEmpty()) {
+            List<Long> ids = course.getCourseStudents()
+                    .stream()
+                    .map(CourseStudent::getStudentId).collect(Collectors.toList());
+
+            List<Student> students = (List<Student>) this.service.getStudentsByCourse(ids);
+
+            course.setStudents(students);
+        }
+
+        return ResponseEntity.ok().body(course);
+    }
 
     @GetMapping("/page/{page}/{size}")
     public Page<Course> index(@PathVariable Integer page, @PathVariable Integer size) {
@@ -56,7 +102,12 @@ public class CourseController extends CommonController<Course, CourseService> {
     public ResponseEntity<?> assignStudent(@RequestBody List<Student> studentList,
                                            @PathVariable Long id) {
         Course courseBD = service.findById(id);
-        studentList.forEach(courseBD::addStudents);
+        studentList.forEach(student -> {
+            CourseStudent courseStudent = new CourseStudent();
+            courseStudent.setStudentId(student.getId());
+            courseStudent.setCourse(courseBD);
+            courseBD.addCourseStudent(courseStudent);
+        });
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(courseBD));
     }
 
@@ -93,15 +144,20 @@ public class CourseController extends CommonController<Course, CourseService> {
 
             List<Exam> exams = courseBD.getExams()
                     .stream()
-                    .map(exam -> {
+                    .peek(exam -> {
                         if (examsIds.contains(exam.getId())) {
                             exam.setReplied(true);
                         }
-                        return exam;
                     }).collect(Collectors.toList());
 
             courseBD.setExams(exams);
         }
         return ResponseEntity.ok(courseBD);
+    }
+
+    @DeleteMapping("/delete-student/{id}")
+    public ResponseEntity<?> deleteCourseByStudentId(@PathVariable Long id) {
+        service.deleteCourseStudentById(id);
+        return ResponseEntity.noContent().build();
     }
 }

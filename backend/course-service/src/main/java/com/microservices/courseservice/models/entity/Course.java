@@ -3,6 +3,7 @@ package com.microservices.courseservice.models.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,11 +16,14 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.microservices.commonexam.models.entity.Exam;
 import com.microservices.commonstudent.models.entity.Student;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +33,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "courses")
 public class Course {
 
@@ -49,7 +54,13 @@ public class Course {
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Date updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"course"}, allowSetters = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "course", cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<CourseStudent> courseStudents;
+
+    // @OneToMany(fetch = FetchType.LAZY)
+    @Transient
     private List<Student> students;
 
     @OneToMany(fetch = FetchType.LAZY)
@@ -79,5 +90,13 @@ public class Course {
 
     public void removeExams(Exam exam) {
         this.exams.remove(exam);
+    }
+
+    public void addCourseStudent(CourseStudent courseStudent) {
+        this.courseStudents.add(courseStudent);
+    }
+
+    public void removeCourseStudent(CourseStudent courseStudent) {
+        this.courseStudents.remove(courseStudent);
     }
 }
