@@ -1,31 +1,59 @@
 package com.microservices.answerservice.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+
+import com.microservices.answerservice.clients.ExamFeignClient;
 import com.microservices.answerservice.models.entity.Answer;
 import com.microservices.answerservice.models.repository.AnswerRepository;
+import com.microservices.commonexam.models.entity.Exam;
+import com.microservices.commonexam.models.entity.Question;
 
 @Service
 public class AnswerServiceImpl implements AnswerService {
 
-    @Autowired
-    private AnswerRepository repository;
+    private final AnswerRepository answerRepository;
+
+    private final ExamFeignClient examFeignClient;
+
+    public AnswerServiceImpl(AnswerRepository repository, ExamFeignClient examFeignClient) {
+        this.answerRepository = repository;
+        this.examFeignClient = examFeignClient;
+    }
 
     @Override
-    @Transactional
     public Iterable<Answer> saveAll(Iterable<Answer> answers) {
-        return repository.saveAll(answers);
+        return answerRepository.saveAll(answers);
     }
 
     @Override
     public Iterable<Answer> findAnswerByStudentByExam(Long studentId, Long examId) {
-        return repository.findAnswerByStudentByExam(studentId, examId);
+        Exam exam = examFeignClient.getExamById(examId);
+
+        List<Question> questions = exam.getQuestions();
+
+        List<Long> questionListIds = questions.stream()
+                .map(Question::getId
+                ).collect(Collectors.toList());
+
+        List<Answer> answerList = (List<Answer>) answerRepository.findAnswerByStudentByQuestionIds(
+                studentId, questionListIds);
+
+        answerList = answerList.stream()
+                .peek(answer -> questions.forEach(question -> {
+                    if (question.getId() == answer.getQuestionId()) {
+                        answer.setQuestion(question);
+                    }
+                })).collect(Collectors.toList());
+
+        return answerList;
     }
 
     @Override
     public Iterable<Long> findExamsIdByWithAnswersByStudent(Long studentId) {
-        return repository.findExamsIdByWithAnswersByStudent(studentId);
+        return null;
+        // return repository.findExamsIdByWithAnswersByStudent(studentId);
     }
 }

@@ -28,14 +28,17 @@ import com.microservices.examenservice.services.ExamService;
 @RestController
 public class ExamController extends CommonController<Exam, ExamService> {
 
-    @Autowired
-    private ExamService service;
+    private final ExamService examService;
+
+    public ExamController(ExamService service) {
+        this.examService = service;
+    }
 
 
     @GetMapping("/page/{page}/{size}")
     public Page<Exam> index(@PathVariable Integer page, @PathVariable Integer size) {
         Pageable pageable = PageRequest.of(page, size);
-        return service.findAllPage(pageable);
+        return examService.findAllPage(pageable);
     }
 
     @PutMapping("/{id}/exam")
@@ -46,7 +49,7 @@ public class ExamController extends CommonController<Exam, ExamService> {
             return this.validate(bindingResult);
         }
 
-        Exam examBD = service.findById(id);
+        Exam examBD = examService.findById(id);
         examBD.setName(exam.getName());
 
         List<Question> listOfDeletedQuestions = new ArrayList<>();
@@ -58,16 +61,16 @@ public class ExamController extends CommonController<Exam, ExamService> {
 
         examBD.setQuestions(exam.getQuestions());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.update(examBD));
+        return ResponseEntity.status(HttpStatus.CREATED).body(examService.update(examBD));
     }
 
     @GetMapping("/filter/{text}")
     public ResponseEntity<?> filter(@PathVariable String text) {
-        return ResponseEntity.ok(service.findByName(text));
+        return ResponseEntity.ok(examService.findByName(text));
     }
 
     @GetMapping("/subjects")
     public ResponseEntity<?> getSubjects() {
-        return ResponseEntity.ok(service.findAllSubjects());
+        return ResponseEntity.ok(examService.findAllSubjects());
     }
 }
