@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.microservices.commonexam.models.entity.Exam;
@@ -34,6 +34,11 @@ public class ExamController extends CommonController<Exam, ExamService> {
         this.examService = service;
     }
 
+
+    @GetMapping("/answered-by-exam")
+    public ResponseEntity<?> getExamsAnsweredByQuestionsIds(@RequestParam List<Long> questionIds) {
+        return ResponseEntity.ok().body(service.findExamsIdWithAnswersByQuestionIds(questionIds));
+    }
 
     @GetMapping("/page/{page}/{size}")
     public Page<Exam> index(@PathVariable Integer page, @PathVariable Integer size) {

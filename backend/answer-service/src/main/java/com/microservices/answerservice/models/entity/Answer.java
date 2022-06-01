@@ -13,7 +13,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Document(collation = "answers")
+@Document(collection = "answers")
 public class Answer {
 
     @Id

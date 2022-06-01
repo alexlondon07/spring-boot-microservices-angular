@@ -13,4 +13,7 @@ public interface ExamRepository extends CrudRepository<Exam, Long>, PagingAndSor
 
     @Query("SELECT e FROM Exam e where e.name like %?1%")
     List<Exam> findByName(String name);
+
+    @Query("SELECT e.id FROM Question q join q.exam e where q.id in ?1 group by e.id")
+    Iterable<Long> findExamsIdWithAnswersByQuestionIds(Iterable<Long> ids);
 }

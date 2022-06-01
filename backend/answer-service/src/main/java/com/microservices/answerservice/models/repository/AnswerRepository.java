@@ -8,8 +8,11 @@ import com.microservices.answerservice.models.entity.Answer;
 
 public interface AnswerRepository extends MongoRepository<Answer, String> {
 
-    @Query("{'studentId: ?0, 'questionId': {$in: ?1} }")
+    @Query("{'studentId': ?0, 'questionId': {$in: ?1} }")
     Iterable<Answer> findAnswerByStudentByQuestionIds(Long studentId, Iterable<Long> questionIds);
+
+    @Query("{'studentId': ?0}")
+    Iterable<Answer> findByStudentId(Long studentId);
 
     //@Query("SELECT a FROM Answer a JOIN FETCH a.question q JOIN FETCH q.exam e WHERE a.studentId=?1 AND e.id=?2")
     //Iterable<Answer> findAnswerByStudentByExam(Long studentId, Long examId);

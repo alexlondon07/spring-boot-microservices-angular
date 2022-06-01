@@ -27,6 +27,7 @@ public class AnswerController {
     public ResponseEntity<?> create(@RequestBody Iterable<Answer> answers){
         answers = ((List<Answer>)answers).stream().map(r -> {
             r.setStudentId(r.getStudent().getId());
+            r.setQuestionId(r.getQuestion().getId());
             return r;
         }).collect(Collectors.toList());
         Iterable<Answer> answersBD = service.saveAll(answers);

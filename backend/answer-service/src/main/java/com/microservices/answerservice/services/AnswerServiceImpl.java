@@ -1,5 +1,6 @@
 package com.microservices.answerservice.services;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,18 +15,18 @@ import com.microservices.commonexam.models.entity.Question;
 @Service
 public class AnswerServiceImpl implements AnswerService {
 
-    private final AnswerRepository answerRepository;
+    private final AnswerRepository repository;
 
     private final ExamFeignClient examFeignClient;
 
     public AnswerServiceImpl(AnswerRepository repository, ExamFeignClient examFeignClient) {
-        this.answerRepository = repository;
+        this.repository = repository;
         this.examFeignClient = examFeignClient;
     }
 
     @Override
     public Iterable<Answer> saveAll(Iterable<Answer> answers) {
-        return answerRepository.saveAll(answers);
+        return repository.saveAll(answers);
     }
 
     @Override
@@ -34,26 +35,46 @@ public class AnswerServiceImpl implements AnswerService {
 
         List<Question> questions = exam.getQuestions();
 
-        List<Long> questionListIds = questions.stream()
-                .map(Question::getId
-                ).collect(Collectors.toList());
+        List<Long> questionListIds = questions
+                .stream()
+                .map(Question::getId)
+                .collect(Collectors.toList());
 
-        List<Answer> answerList = (List<Answer>) answerRepository.findAnswerByStudentByQuestionIds(
+        List<Answer> answerList = (List<Answer>) repository.findAnswerByStudentByQuestionIds(
                 studentId, questionListIds);
 
-        answerList = answerList.stream()
-                .peek(answer -> questions.forEach(question -> {
-                    if (question.getId() == answer.getQuestionId()) {
-                        answer.setQuestion(question);
-                    }
-                })).collect(Collectors.toList());
+
+        answerList = answerList.stream().map(answer -> {
+            questions.forEach(question -> {
+                if (question.getId() == answer.getQuestionId()) {
+                    answer.setQuestion(question);
+                }
+            });
+            return answer;
+        }).collect(Collectors.toList());
 
         return answerList;
     }
 
+
     @Override
     public Iterable<Long> findExamsIdByWithAnswersByStudent(Long studentId) {
-        return null;
-        // return repository.findExamsIdByWithAnswersByStudent(studentId);
+
+        List<Answer> answerList = (List<Answer>) repository.findByStudentId(studentId);
+        List<Long> examIds = Collections.emptyList();
+
+        if (!answerList.isEmpty()) {
+            List<Long> questionsIds = answerList
+                    .stream()
+                    .map(Answer::getQuestionId).collect(Collectors.toList());
+
+            examIds = examFeignClient.getExamsAnsweredByQuestionsIds(questionsIds);
+        }
+        return examIds;
+    }
+
+    @Override
+    public Iterable<Answer> findByStudentId(Long studentId) {
+        return repository.findByStudentId(studentId);
     }
 }

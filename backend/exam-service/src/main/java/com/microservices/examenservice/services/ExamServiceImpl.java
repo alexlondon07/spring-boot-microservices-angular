@@ -29,4 +29,10 @@ public class ExamServiceImpl extends CommonServiceImpl<Exam, ExamRepository> imp
     public List<Subject> findAllSubjects() {
         return (List<Subject>) subjectRepository.findAll();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Iterable<Long> findExamsIdWithAnswersByQuestionIds(Iterable<Long> ids) {
+        return repository.findExamsIdWithAnswersByQuestionIds(ids);
+    }
 }
