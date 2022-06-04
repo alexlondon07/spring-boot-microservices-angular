@@ -1,27 +1,19 @@
 package com.microservices.answerservice.services;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.microservices.answerservice.clients.ExamFeignClient;
 import com.microservices.answerservice.models.entity.Answer;
 import com.microservices.answerservice.models.repository.AnswerRepository;
-import com.microservices.commonexam.models.entity.Exam;
-import com.microservices.commonexam.models.entity.Question;
-
 @Service
 public class AnswerServiceImpl implements AnswerService {
 
     private final AnswerRepository repository;
 
-    private final ExamFeignClient examFeignClient;
-
-    public AnswerServiceImpl(AnswerRepository repository, ExamFeignClient examFeignClient) {
+    public AnswerServiceImpl(AnswerRepository repository) {
         this.repository = repository;
-        this.examFeignClient = examFeignClient;
     }
 
     @Override
@@ -31,7 +23,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public Iterable<Answer> findAnswerByStudentByExam(Long studentId, Long examId) {
-        Exam exam = examFeignClient.getExamById(examId);
+        /*Exam exam = examFeignClient.getExamById(examId);
 
         List<Question> questions = exam.getQuestions();
 
@@ -51,16 +43,15 @@ public class AnswerServiceImpl implements AnswerService {
                 }
             });
             return answer;
-        }).collect(Collectors.toList());
-
-        return answerList;
+        }).collect(Collectors.toList());*/
+        return repository.findAnswerByStudentByExam(studentId, examId);
     }
 
 
     @Override
     public Iterable<Long> findExamsIdByWithAnswersByStudent(Long studentId) {
 
-        List<Answer> answerList = (List<Answer>) repository.findByStudentId(studentId);
+       /* List<Answer> answerList = (List<Answer>) repository.findByStudentId(studentId);
         List<Long> examIds = Collections.emptyList();
 
         if (!answerList.isEmpty()) {
@@ -69,8 +60,13 @@ public class AnswerServiceImpl implements AnswerService {
                     .map(Answer::getQuestionId).collect(Collectors.toList());
 
             examIds = examFeignClient.getExamsAnsweredByQuestionsIds(questionsIds);
-        }
-        return examIds;
+        }*/
+        List<Answer> answerList = (List<Answer>) repository.findExamsIdByWithAnswersByStudent(studentId);
+        return answerList
+                .stream()
+                .map(r -> r.getQuestion().getExam().getId())
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     @Override
