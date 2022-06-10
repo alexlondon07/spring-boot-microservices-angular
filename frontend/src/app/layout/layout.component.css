@@ -1,0 +1,40 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+mat-drawer {
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.margin-left {
+  margin-left: 300px;
+}
+
+mat-drawer-container  {
+  min-height: calc( 100vh - 64px );
+}
+
+::ng-deep .mat-drawer-inner-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #ecececc2;
+}
+
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+}
+
+
+.date-hour-content {
+  background: #3f51b538;
+  text-align: center;
+  padding: 10px 0;
+}

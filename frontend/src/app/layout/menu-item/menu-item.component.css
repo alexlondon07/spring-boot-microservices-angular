@@ -1,0 +1,51 @@
+.mat-expansion-panel {
+  box-shadow: none;
+  background: transparent;
+}
+
+.mat-expansion-panel-header {
+  padding: 0 16px;
+}
+
+.mat-expansion-panel-header-title,
+.mat-expansion-panel-header-description {
+  align-items: center;
+}
+
+.mat-list-icon {
+  padding: 4px;
+}
+
+.mat-list-item {
+  cursor: pointer;
+  border-left: 4px solid transparent;
+  transition: 0.2s all;
+
+  box-sizing: border-box;
+}
+
+.mat-list-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.mat-list-base {
+  padding-top: 0;
+}
+
+.mat-list-base .mat-list-item {
+  height: 50px;
+}
+
+.list-item {
+  font-size: 16px;
+  padding-left: 16px;
+}
+
+.mat-line {
+  white-space: normal !important;
+}
+
+.active {
+  background: #94a5ff33 !important;
+  border-left: 4px solid #3f51b5;
+}
