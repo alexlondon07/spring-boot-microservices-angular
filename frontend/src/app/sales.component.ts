@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-sales',
   template: `
-    <app-page-header icon="monetization_on">
+    <app-page-header icon="money">
       <h2>Sales</h2>
 
       <button routerLink="/home" mat-flat-button color="primary" class="action">

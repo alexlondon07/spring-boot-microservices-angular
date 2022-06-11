@@ -1,12 +1,14 @@
 /* Add application styles & imports to this file! */
 
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
+/* @import '~@angular/material/prebuilt-themes/indigo-pink.css'; */
+
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 body {
-  margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+    margin: 0;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 .mr-2 {
-  margin-right: 0.5rem;
+    margin-right: 0.5rem;
 }

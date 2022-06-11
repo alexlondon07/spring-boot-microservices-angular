@@ -47,12 +47,26 @@ export class LayoutComponent {
           color: '#ff7f0e'
         },
         {
-          title: 'Customers',
+          title: 'Students',
           icon: 'people',
           color: '#ff7f0e',
-          link: '/customers'
+          link: '/students'
+        },
+        {
+          title: 'Courses',
+          icon: 'create_new_folder',
+          color: '#ff7f0e',
+          link: '/courses'
+        },
+        {
+          title: 'Exams',
+          icon: 'dataset',
+          color: '#ff7f0e',
+          link: '/exams'
         }
       ]
     }
   ];
 }
+
+
