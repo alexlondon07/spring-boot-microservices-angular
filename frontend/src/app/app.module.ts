@@ -17,6 +17,7 @@ import { HeaderComponent } from './layout/header.component';
 import { MenuItemComponent } from './layout/menu-item/menu-item.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule} from '@angular/material/table';
 import { APP_BASE_HREF } from '@angular/common';
 
 import { PageHeaderComponent } from './layout/page-header.component';
@@ -24,6 +25,7 @@ import { SalesComponent } from './sales.component';
 import { StudentsComponent } from './components/students/students.component';
 import { CoursesComponent } from './components/courses/courses.component';
 import { ExamsComponent } from './components/exams/exams.component';
+import { HttpClientModule } from '@angular/common/http';
 const routes: Routes = [
   {
     path: '',
@@ -60,18 +62,22 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
+    // Material Design
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-    RouterModule.forRoot(routes),
+    MatTableModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
     MatMenuModule,
+
+    BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    RouterModule.forRoot(routes),
+    HttpClientModule
   ],
   declarations: [
     AppComponent,
