@@ -1,0 +1,60 @@
+mat-form-field {
+    width: 90%;
+}
+
+.id-name {
+    width: 35%;
+    margin-right: 5px;
+}
+
+.id-number {
+    width: 55%;
+    margin-left: 5px;
+}
+
+.phone-name {
+    width: 45px;
+    margin-right: 5px;
+}
+
+.country-code {
+    width: 25%;
+    margin-left: 1px;
+}
+
+.phone-number {
+    width: 65%;
+    margin-left: 5px;
+}
+
+.btn-sec {
+    margin-right: 5rem !important;
+    text-align: right;
+    margin-top: 1.5em;
+}
+
+.Update-btn {
+    margin: 5px;
+}
+
+.Discard-btn {
+    margin: 5px;
+}
+
+.text-inside {
+    position: absolute;
+    left: 5px;
+    width: 100%;
+}
+
+@media (max-width: 800px) {
+    .btn-sec {
+        margin-right: 1rem !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .btn-sec {
+        margin-right: 1rem !important;
+    }
+}

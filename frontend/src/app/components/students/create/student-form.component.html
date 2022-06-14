@@ -1,0 +1,65 @@
+<div>
+    <div class="add-title">
+        <h2 class="primary">Add Student</h2>
+    </div>
+    <div>
+        <form [formGroup]="addStudentForm" (change)="formChanged()">
+            <mat-grid-list cols="2" [cols]="breakpoint" rowHeight="85px" (window:resize)="onResize($event)">
+                <mat-grid-tile>
+                    <div class="text-inside">
+                        <mat-form-field>
+                            <input matInput placeholder="First Name" formControlName="firstname" required>
+                            <mat-error *ngIf="addStudentForm.controls.firstname.hasError('required')">
+                                Please enter first name
+                            </mat-error>
+                            <mat-error *ngIf="addStudentForm.controls.firstname.hasError('pattern')">
+                                Please enter valid first name
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside">
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Last Name" formControlName="lastname" required>
+                            <mat-error *ngIf="addStudentForm.controls.lastname.hasError('required')">
+                                Please enter last name
+                            </mat-error>
+                            <mat-error *ngIf="addStudentForm.controls.lastname.hasError('pattern')">
+                                Please enter valid last name
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <div class="text-inside">
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Email address" formControlName="email" required>
+                            <mat-error *ngIf="addStudentForm.controls.email.hasError('required')">
+                                Please enter email id
+                            </mat-error>
+                            <mat-error *ngIf="addStudentForm.controls.email.hasError('email')">
+                                Please enter valid email id
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <div class="text-inside">
+                        <mat-form-field>
+                            <textarea matInput placeholder="Address"></textarea>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+
+            <div class="btn-sec">
+                <button mat-raised-button type="submit" color="primary" class="Update-btn">Save</button>
+                <button mat-raised-button type="button" class="Discard-btn" (click)="openDialog()">Cancel</button>
+            </div>
+
+        </form>
+    </div>
+</div>
