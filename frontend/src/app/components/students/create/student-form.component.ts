@@ -26,9 +26,24 @@ export class StudentFormComponent implements OnInit {
   public ngOnInit(): void {
     this.addStudentForm = this.fb.group({
       id: null,
-      name: [null, [Validators.required, Validators.pattern('[a-zA-Z]+([a-zA-Z ]+)*')]],
-      lastName: [null, [Validators.required, Validators.pattern('[a-zA-Z]+([a-zA-Z ]+)*')]],
-      email: [null, [Validators.required, Validators.email]],
+      name: [null, [
+        Validators.required,
+        Validators.pattern('[a-zA-Z]+([a-zA-Z ]+)*'),
+        Validators.minLength(3),
+        Validators.maxLength(90),
+      ]],
+      lastName: [null, [
+        Validators.required,
+        Validators.pattern('[a-zA-Z]+([a-zA-Z ]+)*'),
+        Validators.minLength(5),
+        Validators.maxLength(90)
+      ]],
+      email: [null, [
+        Validators.required,
+        Validators.email,
+        Validators.minLength(5),
+        Validators.maxLength(90)
+      ]],
     });
     this.breakpoint = window.innerWidth <= 600 ? 1 : 2; // Breakpoint observer code
   }

@@ -12,3 +12,21 @@ body {
 .mr-2 {
     margin-right: 0.5rem;
 }
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+td,
+th {
+    width: 25%;
+}
+
+mat-icon {
+    font-size: 18px;
+}
+
+.table-buttons__field {
+    min-width: 200px;
+}

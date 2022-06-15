@@ -30,7 +30,6 @@ export class StudentsComponent implements OnInit, AfterViewInit {
     @ViewChild(MatSort, { static: true }) sort: MatSort;
     @ViewChild('filter', { static: true }) filter: ElementRef;
 
-
     constructor(
       private service: StudentService, 
       public _dialog: MatDialog,
@@ -67,8 +66,9 @@ export class StudentsComponent implements OnInit, AfterViewInit {
     getData() {
       this.service.getAllStudents().subscribe(data => {
         this.students = data;
-        this.dataSource.data = data;
-        this.paginator = this.dataSource.paginator;
+        this.dataSource =  new MatTableDataSource(data);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
       });
     }
 }

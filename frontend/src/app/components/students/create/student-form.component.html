@@ -15,6 +15,12 @@
                             <mat-error *ngIf="addStudentForm.controls.name.hasError('pattern')">
                                 Please enter valid first name
                             </mat-error>
+                            <mat-error *ngIf="addStudentForm.controls.name.hasError('maxlength')">
+                                This field must have at most 90 characters.
+                            </mat-error>
+                            <mat-error *ngIf="addStudentForm.controls.name.hasError('minlength')">
+                                This field must have at least 3 characters.
+                            </mat-error>
                         </mat-form-field>
                     </div>
                 </mat-grid-tile>
@@ -27,6 +33,12 @@
                             </mat-error>
                             <mat-error *ngIf="addStudentForm.controls.lastName.hasError('pattern')">
                                 Please enter valid last name
+                            </mat-error>
+                            <mat-error *ngIf="addStudentForm.controls.lastName.hasError('maxlength')">
+                                This field must have at most 90 characters.
+                            </mat-error>
+                            <mat-error *ngIf="addStudentForm.controls.lastName.hasError('minlength')">
+                                This field must have at least 3 characters.
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -41,6 +53,12 @@
                             </mat-error>
                             <mat-error *ngIf="addStudentForm.controls.email.hasError('email')">
                                 Please enter valid email id
+                            </mat-error>
+                            <mat-error *ngIf="addStudentForm.controls.email.hasError('maxlength')">
+                                This field must have at most 90 characters.
+                            </mat-error>
+                            <mat-error *ngIf="addStudentForm.controls.email.hasError('minlength')">
+                                This field must have at least 3 characters.
                             </mat-error>
                         </mat-form-field>
                     </div>
