@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { StudentService } from '../../../services/student.service';
 
@@ -18,15 +18,16 @@ export class StudentFormComponent implements OnInit {
   constructor(
     private _studentService: StudentService,
     private fb: FormBuilder,
-    public dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public dialogRef: MatDialogRef<StudentFormComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   public ngOnInit(): void {
     this.addStudentForm = this.fb.group({
       id: null,
-      firstname: [null, [Validators.required, Validators.pattern('[a-zA-Z]+([a-zA-Z ]+)*')]],
-      lastname: [null, [Validators.required, Validators.pattern('[a-zA-Z]+([a-zA-Z ]+)*')]],
+      name: [null, [Validators.required, Validators.pattern('[a-zA-Z]+([a-zA-Z ]+)*')]],
+      lastName: [null, [Validators.required, Validators.pattern('[a-zA-Z]+([a-zA-Z ]+)*')]],
       email: [null, [Validators.required, Validators.email]],
     });
     this.breakpoint = window.innerWidth <= 600 ? 1 : 2; // Breakpoint observer code
@@ -37,14 +38,14 @@ export class StudentFormComponent implements OnInit {
   }
 
   openDialog(): void {
-    console.log(this.wasFormChanged);
+    this.closeDialog(null);
+  }
 
-    this.closeDialog();
+
+  closeDialog(res: any) {
+    this.dialogRef.close({ event: 'close', data: res });
   }
-  
-  closeDialog(){
-    this.dialog.closeAll();
-  }
+
 
   // tslint:disable-next-line:no-any
   public onResize(event: any): void {
@@ -65,14 +66,14 @@ export class StudentFormComponent implements OnInit {
 
   onSubmit() {
 
-    if(!this.addStudentForm.valid){
+    if (!this.addStudentForm.valid) {
       return;
     }
 
     this._studentService.createStudent(this.addStudentForm.value).subscribe(res => {
       this.addStudentForm.reset();
       this.openSnackBar('Information saved successfully', 'OK');
-      this.closeDialog();
+      this.closeDialog(res);
     });
   }
 

@@ -29,7 +29,7 @@ export class StudentService {
   }
 
   public createStudent(student: Student): Observable<Student> {
-    return this.http.post<Student>(`${environment.API_URL}/students/`, student);
+    return this.http.post<Student>(`${environment.API_URL}/students/`, student, { headers: this.headers});
   }
 
   public updateStudent(student: Student): Observable<Student> {

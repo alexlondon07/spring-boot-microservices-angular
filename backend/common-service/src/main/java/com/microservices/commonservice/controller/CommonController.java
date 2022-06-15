@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.microservices.commonservice.service.CommonService;
 
-@CrossOrigin({"http://localhost:4200"})
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class CommonController<E, S extends CommonService<E>> {
 

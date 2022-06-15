@@ -8,11 +8,11 @@
                 <mat-grid-tile>
                     <div class="text-inside">
                         <mat-form-field>
-                            <input matInput placeholder="First Name" formControlName="firstname" required>
-                            <mat-error *ngIf="addStudentForm.controls.firstname.hasError('required')">
+                            <input matInput placeholder="First Name" formControlName="name" required>
+                            <mat-error *ngIf="addStudentForm.controls.name.hasError('required')">
                                 Please enter first name
                             </mat-error>
-                            <mat-error *ngIf="addStudentForm.controls.firstname.hasError('pattern')">
+                            <mat-error *ngIf="addStudentForm.controls.name.hasError('pattern')">
                                 Please enter valid first name
                             </mat-error>
                         </mat-form-field>
@@ -21,11 +21,11 @@
                 <mat-grid-tile>
                     <div class="text-inside">
                         <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Last Name" formControlName="lastname" required>
-                            <mat-error *ngIf="addStudentForm.controls.lastname.hasError('required')">
+                            <input matInput placeholder="Last Name" formControlName="lastName" required>
+                            <mat-error *ngIf="addStudentForm.controls.lastName.hasError('required')">
                                 Please enter last name
                             </mat-error>
-                            <mat-error *ngIf="addStudentForm.controls.lastname.hasError('pattern')">
+                            <mat-error *ngIf="addStudentForm.controls.lastName.hasError('pattern')">
                                 Please enter valid last name
                             </mat-error>
                         </mat-form-field>

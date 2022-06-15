@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 import { MatTableDataSource } from '@angular/material/table';
@@ -23,7 +23,7 @@ import { StudentFormComponent } from '../create/student-form.component';
 export class StudentsComponent implements OnInit, AfterViewInit {
 
     title = 'Students list';
-    public students: Student[] = [];
+    students: Student[] = [];
     displayedColumns: string[] = ['id', 'name', 'lastName', 'email', 'createdAt', 'actions'];
     dataSource = new MatTableDataSource();
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -31,14 +31,24 @@ export class StudentsComponent implements OnInit, AfterViewInit {
     @ViewChild('filter', { static: true }) filter: ElementRef;
 
 
-    constructor(private service: StudentService, 
-      public _dialog: MatDialog) { }
+    constructor(
+      private service: StudentService, 
+      public _dialog: MatDialog,
+      private changeDetectorRefs: ChangeDetectorRef) { }
 
 
     openDialog(): void {
       const dialogRef = this._dialog.open(StudentFormComponent, {
         width: '640px', disableClose: true
       });
+      dialogRef.afterClosed().subscribe(result => {
+        if(result.data.id > 0){
+          this.dataSource.data.push(result.data);
+          this.changeDetectorRefs.detectChanges();
+        }
+        console.log("TCL: StudentsComponent -> result", result)
+      });
+  
     }
 
     ngOnInit() {
@@ -56,9 +66,9 @@ export class StudentsComponent implements OnInit, AfterViewInit {
 
     getData() {
       this.service.getAllStudents().subscribe(data => {
+        this.students = data;
         this.dataSource.data = data;
         this.paginator = this.dataSource.paginator;
-        console.log("TCL: StudentsComponent -> getData -> this.dataSource", this.dataSource)
       });
     }
 }
