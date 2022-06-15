@@ -8,7 +8,6 @@ import { Student } from 'src/app/models/Student';
 import { StudentService } from 'src/app/services/student.service';
 import { MatDialog } from '@angular/material/dialog';
 import { StudentFormComponent } from '../create/student-form.component';
-
 @Component({
   selector: 'app-students',
   templateUrl: './students.component.html',
@@ -32,11 +31,12 @@ export class StudentsComponent implements OnInit, AfterViewInit {
     @ViewChild('filter', { static: true }) filter: ElementRef;
 
 
-    constructor(private service: StudentService, public dialog: MatDialog) { }
+    constructor(private service: StudentService, 
+      public _dialog: MatDialog) { }
 
 
     openDialog(): void {
-      const dialogRef = this.dialog.open(StudentFormComponent, {
+      const dialogRef = this._dialog.open(StudentFormComponent, {
         width: '640px', disableClose: true
       });
     }

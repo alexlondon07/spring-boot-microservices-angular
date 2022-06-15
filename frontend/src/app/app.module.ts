@@ -37,6 +37,7 @@ import { StudentsComponent } from './components/students/list/students.component
 import { CoursesComponent } from './components/courses/list/courses.component';
 import { MatPseudoCheckboxModule } from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import {A11yModule} from '@angular/cdk/a11y';
 import {BidiModule} from '@angular/cdk/bidi';
@@ -117,6 +118,7 @@ const routes: Routes = [
     MatDialogModule,
     MatFormFieldModule,
     MatDatepickerModule,
+    MatSnackBarModule,
     
     ReactiveFormsModule,
     BrowserModule,

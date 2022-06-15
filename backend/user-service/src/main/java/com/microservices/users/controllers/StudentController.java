@@ -35,10 +35,10 @@ import com.microservices.users.services.StudentService;
 @RestController
 public class StudentController extends CommonController<Student, StudentService> {
 
-    private final StudentService service;
+    private final StudentService studentService;
 
     public StudentController(StudentService service) {
-        this.service = service;
+        this.studentService = service;
     }
 
     @GetMapping("/students-by-course")
@@ -49,7 +49,7 @@ public class StudentController extends CommonController<Student, StudentService>
     @GetMapping("/page/{page}/{size}")
     public Page<Student> index(@PathVariable Integer page, @PathVariable Integer size) {
         Pageable pageable = PageRequest.of(page, size);
-        return service.findAllPage(pageable);
+        return studentService.findAllPage(pageable);
     }
 
     @PutMapping("/{id}/update")
@@ -58,16 +58,16 @@ public class StudentController extends CommonController<Student, StudentService>
         if (bindingResult.hasErrors()) {
             return this.validate(bindingResult);
         }
-        Student studentBD = service.findById(student.getId());
+        Student studentBD = studentService.findById(student.getId());
         studentBD.setName(student.getName());
         studentBD.setLastName(student.getLastName());
         studentBD.setEmail(student.getEmail());
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.update(studentBD));
+        return ResponseEntity.status(HttpStatus.CREATED).body(studentService.update(studentBD));
     }
 
     @GetMapping("/filter/{text}")
     public ResponseEntity<?> filter(@PathVariable String text) {
-        return ResponseEntity.ok(service.findByNameAndLastName(text));
+        return ResponseEntity.ok(studentService.findByNameAndLastName(text));
     }
 
     @PostMapping("/create-with-image")
@@ -88,19 +88,19 @@ public class StudentController extends CommonController<Student, StudentService>
         if (bindingResult.hasErrors()) {
             return this.validate(bindingResult);
         }
-        Student studentBD = service.findById(student.getId());
+        Student studentBD = studentService.findById(student.getId());
         studentBD.setName(student.getName());
         studentBD.setLastName(student.getLastName());
         studentBD.setEmail(student.getEmail());
         if (!file.isEmpty()) {
             studentBD.setImage(file.getBytes());
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.update(studentBD));
+        return ResponseEntity.status(HttpStatus.CREATED).body(studentService.update(studentBD));
     }
 
     @GetMapping("/{id}/uploads/image")
     public ResponseEntity<?> viewImage(@PathVariable Long id) {
-        Student studentBD = service.findById(id);
+        Student studentBD = studentService.findById(id);
 
         Resource image = new ByteArrayResource(studentBD.getImage());
 
