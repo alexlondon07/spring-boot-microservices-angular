@@ -1,7 +1,7 @@
 <app-page-header icon="people">
     <h2>Student</h2>
 
-    <button (click)="openDialog()" mat-flat-button color="primary" class="action">
+    <button (click)="openDialog(null)" mat-flat-button color="primary" class="action">
         <mat-icon class="mr-2">add</mat-icon>
         <span>New Student</span>
     </button>
@@ -53,10 +53,10 @@
             <mat-header-cell *matHeaderCellDef></mat-header-cell>
             <mat-cell *matCellDef="let row;">
                 <button mat-icon-button>
-                    <mat-icon>edit</mat-icon>
+                    <mat-icon (click)="openDialog(row)">edit</mat-icon>
                 </button>
                 <button mat-icon-button>
-                    <mat-icon color="warn">delete</mat-icon>
+                    <mat-icon color="warn" (click)="delete(row.id)">delete</mat-icon>
                 </button>
             </mat-cell>
         </ng-container>
@@ -70,7 +70,5 @@
         </tr>
 
     </table>
-    <mat-paginator #paginator [length]="dataSource.filteredData.length" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[ 5, 10, 25, 100]">
-    </mat-paginator>
-
+    <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions" [pageIndex]="pageIndex" [pageSize]="pageSize" [length]="totalElements" (page)="nextPage($event)"> </mat-paginator>
 </div>

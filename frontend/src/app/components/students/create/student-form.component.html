@@ -73,7 +73,7 @@
             </mat-grid-list>
 
             <div class="btn-sec">
-                <button [disabled]="!addStudentForm.valid" mat-raised-button type="submit" color="primary" class="Update-btn">Save</button>
+                <button [disabled]="!addStudentForm.valid" mat-raised-button type="submit" color="primary" class="Update-btn">{{titleButton}}</button>
                 <button mat-raised-button type="button" class="Discard-btn" (click)="openDialog()">Cancel</button>
             </div>
 
