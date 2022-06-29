@@ -10,17 +10,28 @@
 
 <div style="padding: 0 20px">
 
-    <mat-form-field appearance="standard">
-        <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
-    </mat-form-field>
+    <div class="example-container">
+        <mat-form-field hintLabel="Max 15 characters" appearance="fill">
+            <mat-label>Enter some input</mat-label>
+            <input matInput #input maxlength="15" (keyup)="applyFilter($event)" placeholder="Search with Name or Last name">
+            <mat-hint align="end">{{input.value?.length || 0}}/15</mat-hint>
+        </mat-form-field>
+    </div>
 
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-        <!-- id Column -->
-        <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Item. </th>
-            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        <!-- actions -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let row;">
+                <button mat-icon-button>
+                            <mat-icon (click)="openDialog(row)">edit</mat-icon>
+                        </button>
+                <button mat-icon-button>
+                            <mat-icon color="warn" (click)="delete(row.id)">delete</mat-icon>
+                        </button>
+            </mat-cell>
         </ng-container>
 
         <!-- Name Column -->
@@ -39,26 +50,6 @@
         <ng-container matColumnDef="email">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
             <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-        </ng-container>
-
-        <!-- createdAt Column -->
-        <ng-container matColumnDef="createdAt">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Created At </th>
-            <td mat-cell *matCellDef="let element"> {{element.createdAt | date: 'yyyy/MM/d'}} </td>
-        </ng-container>
-
-        <!-- actions -->
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef> Actions </th>
-            <mat-header-cell *matHeaderCellDef></mat-header-cell>
-            <mat-cell *matCellDef="let row;">
-                <button mat-icon-button>
-                    <mat-icon (click)="openDialog(row)">edit</mat-icon>
-                </button>
-                <button mat-icon-button>
-                    <mat-icon color="warn" (click)="delete(row.id)">delete</mat-icon>
-                </button>
-            </mat-cell>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

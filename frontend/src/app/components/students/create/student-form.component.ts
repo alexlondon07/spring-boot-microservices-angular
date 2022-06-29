@@ -13,6 +13,7 @@ import { StudentService } from 'src/app/services/student.service';
 export class StudentFormComponent implements OnInit {
 
     titleButton = 'Save';
+    title = 'Add Student';
     public breakpoint: number; // Breakpoint observer code
     public addStudentForm: FormGroup;
     wasFormChanged = false;
@@ -34,8 +35,10 @@ export class StudentFormComponent implements OnInit {
     }
 
     createFormBuilder() {
-
-      this.titleButton = this.student?.id > 0 ? 'Editar' :  this.titleButton;
+      if(this.student?.id > 0){
+        this.titleButton =  'Editar';
+        this.title = 'Edit Student';
+      }
 
       this.addStudentForm = this.fb.group({
         id: this.student?.id,
@@ -59,9 +62,7 @@ export class StudentFormComponent implements OnInit {
         ]],
       });
       
-      this.onCreateGroupFormValueChange();
-        console.log("TCL: StudentFormComponent -> createFormBuilder -> this.addStudentForm", this.addStudentForm)
-      
+      this.onCreateGroupFormValueChange();      
     }
 
     public onAddCus(): void {
@@ -95,12 +96,6 @@ export class StudentFormComponent implements OnInit {
 
     onSubmit() {
       this.validateForm();
-
-      this._studentService.create(this.addStudentForm.value).subscribe(res => {
-        this.addStudentForm.reset();
-        this.openSnackBar('Information saved successfully', 'OK');
-        this.closeDialog(res);
-      });
     }
 
     validateForm(): void {
@@ -134,7 +129,9 @@ export class StudentFormComponent implements OnInit {
     }
 
     openSnackBar(message: string, action: string) {
-      this._snackBar.open(message, action);
+      this._snackBar.open(message, action, {
+        duration: 3000
+      });
     }
 
     onCreateGroupFormValueChange(){

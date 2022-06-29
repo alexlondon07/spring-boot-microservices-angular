@@ -52,6 +52,13 @@ public class StudentController extends CommonController<Student, StudentService>
         return studentService.findAllPage(pageable);
     }
 
+    @GetMapping("/page/{page}/{size}/{text}")
+    public Page<Student> indexPageWithText(@PathVariable Integer page, @PathVariable Integer size,
+                                           @PathVariable String text) {
+        Pageable pageable = PageRequest.of(page, size);
+        return studentService.findByNameAndLastNameWithPageable(text, pageable);
+    }
+
     @PutMapping("/{id}/update")
     public ResponseEntity<?> update(@Valid @RequestBody Student student, BindingResult bindingResult) {
 

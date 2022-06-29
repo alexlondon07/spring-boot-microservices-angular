@@ -3,6 +3,8 @@ package com.microservices.users.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,11 @@ public class StudentServiceImpl extends CommonServiceImpl<Student, StudentReposi
 
     @Autowired
     private CourseFeignClient courseFeignClient;
+
+    @Override
+    public Page<Student> findByNameAndLastNameWithPageable(String text, Pageable pageable) {
+        return repository.findByNameAndLastNameWithPageable(text, pageable);
+    }
 
     @Override
     @Transactional(readOnly = true)

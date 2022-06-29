@@ -1,36 +1,49 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { Student } from 'src/app/models/Student';
-import { StudentService } from 'src/app/services/student.service';
-import { MatDialog } from '@angular/material/dialog';
-import { StudentFormComponent } from '../create/student-form.component';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatPaginator, PageEvent } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { Student } from "src/app/models/Student";
+import { StudentService } from "src/app/services/student.service";
+import { MatDialog } from "@angular/material/dialog";
+import { StudentFormComponent } from "../create/student-form.component";
+import { ConfirmDialogComponent } from "../../../shared/confirm-dialog/confirm-dialog.component";
 @Component({
-  selector: 'app-students',
-  templateUrl: './students.component.html',
-  styleUrls: ['./students.component.css'],
+  selector: "app-students",
+  templateUrl: "./students.component.html",
+  styleUrls: ["./students.component.css"],
 })
 export class StudentsComponent implements OnInit, AfterViewInit {
-
   dialogRef: MatDialog;
-  title = 'Students list';
-  students: Student[] = [];
+  title = "Students list";
+  dataList: Student[] = [];
   totalElements: number = 0;
   pageIndex: number = 0;
   pageSize: number = 10;
   pageSizeOptions: number[] = [5, 10, 25, 100];
 
-  displayedColumns: string[] = ['id', 'name', 'lastName', 'email', 'createdAt', 'actions'];
+  displayedColumns: string[] = [
+    "actions",
+    "name",
+    "lastName",
+    "email"
+  ];
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild('filter', { static: true }) filter: ElementRef;
+  @ViewChild("filter", { static: true }) filter: ElementRef;
 
   constructor(
     private service: StudentService,
     public _dialog: MatDialog,
-    private changeDetectorRefs: ChangeDetectorRef) { }
+    private changeDetectorRefs: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.getDataPage(this.pageIndex, this.pageSize);
@@ -42,32 +55,33 @@ export class StudentsComponent implements OnInit, AfterViewInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.getDataPageWithText(
+      this.pageIndex,
+      this.pageSize,
+      filterValue.trim().toLowerCase().toString()
+    );
   }
 
   openDialog(student): void {
     const dialogRef = this._dialog.open(StudentFormComponent, {
-      width: '640px',
+      width: "640px",
       disableClose: true,
-      data: student
+      data: student,
     });
-    dialogRef.afterClosed().subscribe(result => {
-      this.validateResponse(result);
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result.data?.id > 0){
+        this.getDataPage(this.pageIndex, this.pageSize);
+      }
     });
   }
 
-  validateResponse(result: any) {
-    if (result.data?.id > 0 && result.method === 'create') {
-      this.dataSource.data.push(result.data);
-    } else {
-      // TODO
-    }
+  detectChanges(){
     this.changeDetectorRefs.detectChanges();
   }
 
   getData() {
-    this.service.getAll().subscribe(data => {
-      this.students = data;
+    this.service.getAll().subscribe((data) => {
+      this.dataList = data;
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
@@ -75,11 +89,19 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   }
 
   delete(id: number) {
-    this.service.delete(id).subscribe(data => {
-      this.dataSource.data = this.students.filter(item => item.id !== id);
-      this.changeDetectorRefs.detectChanges();
-    }, error => {
-      console.log(error.error.message);
+    const dialogRef = this._dialog.open(ConfirmDialogComponent, {
+      data: 'Are you sure you want to delete the record?',
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.service.delete(id).subscribe((data) => {
+                this.getDataPage(this.pageIndex, this.pageSize);
+          },(error) => {
+            console.log(error.error.message);
+          }
+        );
+      }
     });
   }
 
@@ -90,13 +112,31 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   }
 
   getDataPage(page, size) {
-    this.service.getAllPages(page, size)
-      .subscribe((data) => {
-        this.dataSource = data['content'];
-        this.students = data['content'];
-        this.totalElements = data['totalElements'] as number;
-      }, error => {
+    this.service.getAllPages(page, size).subscribe(
+      (data) => {
+        this.manageResponsePages(data);
+      },
+      (error) => {
         console.log(error.error.message);
-      });
+      }
+    );
+  }
+
+  getDataPageWithText(page, size, text) {
+    this.service.getAllPagesWithText(page, size, text).subscribe(
+      (data) => {
+        this.manageResponsePages(data);
+      },
+      (error) => {
+        console.log(error.error.message);
+      }
+    );
+  }
+
+  manageResponsePages(data) {
+    this.dataSource = data["content"];
+    this.dataList = data["content"];
+    this.totalElements = data["totalElements"] as number;
+    this.detectChanges();
   }
 }

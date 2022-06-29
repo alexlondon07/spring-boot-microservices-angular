@@ -48,6 +48,7 @@ import {PortalModule} from '@angular/cdk/portal';
 import {CdkStepperModule} from '@angular/cdk/stepper';
 import {CdkTableModule} from '@angular/cdk/table';
 import { StudentFormComponent } from './components/students/create/student-form.component';
+import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 
 const routes: Routes = [
   {
@@ -140,10 +141,11 @@ const routes: Routes = [
     HomeComponent,
     SalesComponent,
     StudentsComponent,
-    StudentFormComponent
+    StudentFormComponent,
+    ConfirmDialogComponent
   ],
   bootstrap: [AppComponent],
   providers: [{provide: APP_BASE_HREF, useValue: ''}],
-  entryComponents: [StudentFormComponent]
+  entryComponents: [StudentFormComponent, ConfirmDialogComponent]
 })
 export class AppModule {}
