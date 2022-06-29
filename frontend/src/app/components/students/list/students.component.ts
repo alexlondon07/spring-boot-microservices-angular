@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   OnInit,
   ViewChild,
 } from "@angular/core";
@@ -36,8 +35,7 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   ];
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild("filter", { static: true }) filter: ElementRef;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
 
   constructor(
     private service: StudentService,
@@ -51,6 +49,7 @@ export class StudentsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   applyFilter(event: Event) {
@@ -134,9 +133,11 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   }
 
   manageResponsePages(data) {
-    this.dataSource = data["content"];
+    this.dataSource = new MatTableDataSource(data["content"]);
     this.dataList = data["content"];
     this.totalElements = data["totalElements"] as number;
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
     this.detectChanges();
   }
 }

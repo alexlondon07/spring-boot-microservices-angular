@@ -22,16 +22,15 @@
 
         <!-- actions -->
         <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef> Actions </th>
-            <mat-header-cell *matHeaderCellDef></mat-header-cell>
-            <mat-cell *matCellDef="let row;">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
+            <td mat-cell *matCellDef="let row;">
                 <button mat-icon-button>
                             <mat-icon (click)="openDialog(row)">edit</mat-icon>
                         </button>
                 <button mat-icon-button>
                             <mat-icon color="warn" (click)="delete(row.id)">delete</mat-icon>
                         </button>
-            </mat-cell>
+            </td>
         </ng-container>
 
         <!-- Name Column -->
