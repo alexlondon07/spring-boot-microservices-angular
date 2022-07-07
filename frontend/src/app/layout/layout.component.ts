@@ -36,7 +36,7 @@ export class LayoutComponent {
       color: '#ff7f0e'
     },
     {
-      title: 'Statistics',
+      title: 'Dashboard',
       icon: 'bar_chart',
       color: '#ff7f0e',
       subMenu: [

@@ -2,6 +2,7 @@ import { Component, Inject, OnInit, Optional, ChangeDetectorRef } from '@angular
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AppSettings } from 'src/app/config/app';
 import { Student } from 'src/app/models/Student';
 import { StudentService } from 'src/app/services/student.service';
 
@@ -56,7 +57,7 @@ export class StudentFormComponent implements OnInit {
         lastName: [this.student?.lastName, [
           Validators.required,
           Validators.pattern('[a-zA-Z]+([a-zA-Z ]+)*'),
-          Validators.minLength(5),
+          Validators.minLength(3),
           Validators.maxLength(90)
         ]],
         email: [this.student?.email, [
@@ -131,13 +132,13 @@ export class StudentFormComponent implements OnInit {
 
     createStudent(){
       this._studentService.createWithImage(this.addStudentForm.value, this.addStudentForm.controls.image.value).subscribe(res => {
-        this.checkResponse('Information saved successfully', 'create', res);
+        this.checkResponse(AppSettings.GENERIC_MESSAGE_CREATED, 'create', res);
       });
     }
 
     editStudent(){
       this._studentService.editWithImage(this.addStudentForm.value, this.addStudentForm.controls.image.value).subscribe(res => {
-        this.checkResponse('Information updated successfully', 'edit', res);
+        this.checkResponse(AppSettings.GENERIC_MESSAGE_UPDATED, 'edit', res);
       });
     }
 

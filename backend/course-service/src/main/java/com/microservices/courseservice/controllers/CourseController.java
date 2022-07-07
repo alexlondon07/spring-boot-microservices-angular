@@ -31,10 +31,16 @@ import javax.validation.Valid;
 @RestController
 public class CourseController extends CommonController<Course, CourseService> {
 
+    private final CourseService courseService;
+
+    public CourseController(CourseService service) {
+        this.courseService = service;
+    }
+
     @GetMapping
     @Override
     public ResponseEntity<?> getAll() {
-        List<Course> courseList = ((List<Course>) service.findAll())
+        List<Course> courseList = ((List<Course>) courseService.findAll())
                 .stream()
                 .map(course -> {
                     course.getCourseStudents().forEach(courseStudent -> {
@@ -50,7 +56,7 @@ public class CourseController extends CommonController<Course, CourseService> {
 
     @GetMapping({"/page/{page}/{size}/with-students"})
     public ResponseEntity<?> getAllPageable(@PathVariable Integer page, @PathVariable Integer size) {
-        Page<Course> coursesPage = this.service.findAllPage(PageRequest.of(page, size))
+        Page<Course> coursesPage = this.courseService.findAllPage(PageRequest.of(page, size))
                 .map(course -> {
                     course.getCourseStudents().forEach(courseStudent -> {
                         Student student = new Student();
@@ -66,13 +72,13 @@ public class CourseController extends CommonController<Course, CourseService> {
     @GetMapping({"/{id}"})
     @Override
     public ResponseEntity<?> show(@PathVariable Long id) {
-        Course course = this.service.findById(id);
+        Course course = this.courseService.findById(id);
         if (!course.getCourseStudents().isEmpty()) {
             List<Long> ids = course.getCourseStudents()
                     .stream()
                     .map(CourseStudent::getStudentId).collect(Collectors.toList());
 
-            List<Student> students = (List<Student>) this.service.getStudentsByCourse(ids);
+            List<Student> students = (List<Student>) this.courseService.getStudentsByCourse(ids);
 
             course.setStudents(students);
         }
@@ -83,7 +89,14 @@ public class CourseController extends CommonController<Course, CourseService> {
     @GetMapping("/page/{page}/{size}")
     public Page<Course> index(@PathVariable Integer page, @PathVariable Integer size) {
         Pageable pageable = PageRequest.of(page, size);
-        return service.findAllPage(pageable);
+        return courseService.findAllPage(pageable);
+    }
+
+    @GetMapping("/page/{page}/{size}/{text}")
+    public Page<Course> indexPageWithText(@PathVariable Integer page, @PathVariable Integer size,
+                                           @PathVariable String text) {
+        Pageable pageable = PageRequest.of(page, size);
+        return courseService.findByNameOrDescriptionWithPageable(text, pageable);
     }
 
     @PutMapping("/{id}/course")

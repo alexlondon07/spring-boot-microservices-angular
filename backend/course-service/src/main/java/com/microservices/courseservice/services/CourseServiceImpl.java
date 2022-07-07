@@ -1,5 +1,7 @@
 package com.microservices.courseservice.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +46,11 @@ public class CourseServiceImpl extends CommonServiceImpl<Course, CourseRepositor
     @Transactional
     public void deleteCourseStudentById(Long id) {
         repository.deleteCourseStudentById(id);
+    }
+
+    @Override
+    public Page<Course> findByNameOrDescriptionWithPageable(String text, Pageable pageable) {
+        return repository.findByNameOrDescriptionWithPageable(text, pageable);
     }
 }
 

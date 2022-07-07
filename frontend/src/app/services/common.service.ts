@@ -16,7 +16,7 @@ export abstract class CommonService<E extends Generic> {
     constructor(protected http: HttpClient) { }
 
     public getAll(): Observable<E[]> {
-      return this.http.get<E[]>(`${environment.API_URL}/students/`);
+      return this.http.get<E[]>(`${environment.API_URL}`);
     }
 
     public getAllPages(page: string, size: string): Observable<any> {
@@ -27,6 +27,7 @@ export abstract class CommonService<E extends Generic> {
     }
 
     public getAllPagesWithText(page: string, size: string, text: string): Observable<any> {
+      console.log('oeee', `${this.baseEnpoint}/page/${page}/${size}/${text}`);
       const params = new HttpParams()
         .set('page', page)
         .set('size', size)

@@ -3,6 +3,7 @@ import { environment } from "src/environments/environment";
 import { Student } from "../models/Student";
 import { CommonService } from "./common.service";
 import { Observable } from "rxjs";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: "root",
@@ -10,6 +11,10 @@ import { Observable } from "rxjs";
 export class StudentService extends CommonService<Student> {
   protected baseEnpoint = `${environment.API_URL}/students`;
   public formData = new FormData();
+
+  constructor(http: HttpClient) {
+    super(http);
+  }
 
   public createWithImage(student: Student, file: File): Observable<Student> {
     const formData = this.buildFormData(student, file);

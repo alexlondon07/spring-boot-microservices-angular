@@ -1,0 +1,1 @@
+{"ast":null,"code":"export const AppSettings = {\n  GENERIC_CONFIRMATION_MESSAGE_DELETE: 'Are you sure you want to delete the record?',\n  GENERIC_MESSAGE_CREATED: 'Information saved successfully',\n  GENERIC_MESSAGE_UPDATED: 'Information updated successfully'\n};","map":null,"metadata":{},"sourceType":"module"}

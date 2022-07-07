@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators'; // <-- #2 import module
 
 import { AppComponent } from './app.component';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav'; import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, Routes } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
@@ -15,12 +16,12 @@ import { HeaderComponent } from './layout/header.component';
 import { MenuItemComponent } from './layout/menu-item/menu-item.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule} from '@angular/material/table';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatRadioModule} from '@angular/material/radio';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatSelectModule} from '@angular/material/select';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { APP_BASE_HREF } from '@angular/common';
 import { PageHeaderComponent } from './layout/page-header.component';
@@ -30,26 +31,27 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { StudentsComponent } from './components/students/list/students.component';
-import { CoursesComponent } from './components/courses/list/courses.component';
 import { MatPseudoCheckboxModule } from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from "@angular/material/card";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatListModule } from "@angular/material/list";
 
-import {A11yModule} from '@angular/cdk/a11y';
-import {BidiModule} from '@angular/cdk/bidi';
-import {ObserversModule} from '@angular/cdk/observers';
-import {OverlayModule} from '@angular/cdk/overlay';
-import {PlatformModule} from '@angular/cdk/platform';
-import {PortalModule} from '@angular/cdk/portal';
-import {CdkStepperModule} from '@angular/cdk/stepper';
-import {CdkTableModule} from '@angular/cdk/table';
+import { A11yModule } from '@angular/cdk/a11y';
+import { BidiModule } from '@angular/cdk/bidi';
+import { ObserversModule } from '@angular/cdk/observers';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { PlatformModule } from '@angular/cdk/platform';
+import { PortalModule } from '@angular/cdk/portal';
+import { CdkStepperModule } from '@angular/cdk/stepper';
+import { CdkTableModule } from '@angular/cdk/table';
 import { StudentFormComponent } from './components/students/create/student-form.component';
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
+import { CoursesComponent } from './components/courses/list/courses.component';
+import { CourseFormComponent } from './components/courses/create/course-form.component';
 
 const routes: Routes = [
   {
@@ -76,6 +78,10 @@ const routes: Routes = [
       {
         path: 'courses',
         component: CoursesComponent,
+      },
+      {
+        path: 'courses/:id',
+        component: CourseFormComponent,
       },
       {
         path: 'exams',
@@ -105,7 +111,7 @@ const routes: Routes = [
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
-    MatSidenavModule,    MatTableModule,
+    MatSidenavModule, MatTableModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
     MatMenuModule,
@@ -126,8 +132,9 @@ const routes: Routes = [
     MatCardModule,
     MatDividerModule,
     MatListModule,
-    
+
     ReactiveFormsModule,
+    RxReactiveFormsModule,
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
@@ -142,12 +149,14 @@ const routes: Routes = [
     PageHeaderComponent,
     HomeComponent,
     SalesComponent,
+    CoursesComponent,
     StudentsComponent,
     StudentFormComponent,
-    ConfirmDialogComponent
+    CourseFormComponent,
+    ConfirmDialogComponent,
   ],
   bootstrap: [AppComponent],
-  providers: [{provide: APP_BASE_HREF, useValue: ''}],
-  entryComponents: [StudentFormComponent, ConfirmDialogComponent]
+  providers: [{ provide: APP_BASE_HREF, useValue: '' }],
+  entryComponents: [StudentFormComponent, CourseFormComponent, ConfirmDialogComponent]
 })
-export class AppModule {}
+export class AppModule { }

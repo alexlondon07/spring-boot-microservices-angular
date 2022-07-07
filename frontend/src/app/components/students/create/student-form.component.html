@@ -72,7 +72,7 @@
                                 <mat-icon>attach_file</mat-icon>
                             </button>
                             <input type="text" readonly matInput [formControl]="display" />
-                            <input type="file" value="/assets/no_image.svg" accept="image/png,image/jpeg" formControlName="image" hidden #f_input (change)="handleFileInputChange(f_input.files)" />
+                            <input type="file" accept="image/png, image/gif, image/jpeg" formControlName="image" hidden #f_input (change)="handleFileInputChange(f_input.files)" />
                             <mat-error *ngIf="addStudentForm.controls.image.hasError('required')">
                                 This field is required
                             </mat-error>

@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class Course {\n  constructor() {\n    this.students = [];\n    this.exams = [];\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}

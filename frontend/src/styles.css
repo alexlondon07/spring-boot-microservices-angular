@@ -13,11 +13,6 @@ body {
     margin-right: 0.5rem;
 }
 
-.mat-form-field {
-    font-size: 14px;
-    width: 100%;
-}
-
 td,
 th {
     width: 25%;
@@ -29,4 +24,57 @@ mat-icon {
 
 .table-buttons__field {
     min-width: 200px;
+}
+
+
+/* Structure */
+
+table {
+    width: 100%;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+img {
+    width: 40px;
+    height: 40px;
+}
+
+mat-form-field {
+    width: 90%;
+}
+
+.btn-sec {
+    margin-right: 5rem !important;
+    text-align: right;
+    margin-top: 1.5em;
+}
+
+.Update-btn {
+    margin: 5px;
+}
+
+.Discard-btn {
+    margin: 5px;
+}
+
+.text-inside {
+    position: absolute;
+    left: 5px;
+    width: 100%;
+}
+
+@media (max-width: 800px) {
+    .btn-sec {
+        margin-right: 1rem !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .btn-sec {
+        margin-right: 1rem !important;
+    }
 }

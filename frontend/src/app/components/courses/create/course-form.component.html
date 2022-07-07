@@ -1,0 +1,52 @@
+<div>
+    <div class="add-title">
+        <h2 class="primary">{{title}}</h2>
+    </div>
+    <div>
+        <form [formGroup]="form" (change)="formChanged()" (ngSubmit)="onSubmit()">
+            <mat-grid-list cols="2" [cols]="breakpoint" rowHeight="85px" (window:resize)="onResize($event)">
+
+                <mat-grid-tile>
+                    <div class="text-inside">
+                        <mat-form-field>
+                            <input matInput placeholder="First Name" formControlName="name" required>
+                            <mat-error *ngIf="form.controls.name.hasError('required')">
+                                Please enter first name
+                            </mat-error>
+                            <mat-error *ngIf="form.controls.name.hasError('maxlength')">
+                                This field must have at most 90 characters.
+                            </mat-error>
+                            <mat-error *ngIf="form.controls.name.hasError('minlength')">
+                                This field must have at least 3 characters.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <div class="text-inside">
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Description" formControlName="description" required>
+                            <mat-error *ngIf="form.controls.description.hasError('required')">
+                                Please enter description
+                            </mat-error>
+                            <mat-error *ngIf="form.controls.description.hasError('maxlength')">
+                                This field must have at most 100 characters.
+                            </mat-error>
+                            <mat-error *ngIf="form.controls.description.hasError('minlength')">
+                                This field must have at least 5 characters.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+            </mat-grid-list>
+
+            <div class="btn-sec">
+                <button [disabled]="!form.valid" mat-raised-button type="submit" color="primary" class="Update-btn">{{titleButton}}</button>
+                <button mat-raised-button type="button" class="Discard-btn" (click)="openDialog()">Cancel</button>
+            </div>
+
+        </form>
+    </div>
+</div>
