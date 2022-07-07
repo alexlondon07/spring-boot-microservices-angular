@@ -4,9 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, Routes } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
@@ -38,6 +36,9 @@ import { CoursesComponent } from './components/courses/list/courses.component';
 import { MatPseudoCheckboxModule } from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatCardModule } from "@angular/material/card";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatListModule } from "@angular/material/list";
 
 import {A11yModule} from '@angular/cdk/a11y';
 import {BidiModule} from '@angular/cdk/bidi';
@@ -104,9 +105,7 @@ const routes: Routes = [
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
-    MatSidenavModule,
-    MatListModule,
-    MatTableModule,
+    MatSidenavModule,    MatTableModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
     MatMenuModule,
@@ -124,6 +123,9 @@ const routes: Routes = [
     MatFormFieldModule,
     MatDatepickerModule,
     MatSnackBarModule,
+    MatCardModule,
+    MatDividerModule,
+    MatListModule,
     
     ReactiveFormsModule,
     BrowserModule,

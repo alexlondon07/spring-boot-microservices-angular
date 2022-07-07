@@ -5,5 +5,6 @@ export class Student implements Generic{
     name: string;
     lastName: string;
     email:string;
+    image:File;
     createdAt: string;
 }

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, Optional, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Student } from 'src/app/models/Student';
@@ -19,6 +19,10 @@ export class StudentFormComponent implements OnInit {
     wasFormChanged = false;
     student: Student = new Student();
 
+    display: FormControl = new FormControl("", Validators.required);
+    file_store: FileList;
+    file_list: Array<string> = [];
+  
     constructor(
       private _studentService: StudentService,
       private fb: FormBuilder,
@@ -36,12 +40,13 @@ export class StudentFormComponent implements OnInit {
 
     createFormBuilder() {
       if(this.student?.id > 0){
-        this.titleButton =  'Editar';
+        this.titleButton =  'Edit';
         this.title = 'Edit Student';
       }
 
       this.addStudentForm = this.fb.group({
         id: this.student?.id,
+        image: [this.student?.image, [Validators.required]],
         name: [this.student?.name, [
           Validators.required,
           Validators.pattern('[a-zA-Z]+([a-zA-Z ]+)*'),
@@ -64,6 +69,20 @@ export class StudentFormComponent implements OnInit {
       
       this.onCreateGroupFormValueChange();      
     }
+
+    handleFileInputChange(l: FileList): void {
+      this.file_store = l;
+      this.file_list = [];
+      if (l.length) {
+        const f = l[0];
+        const count = l.length > 1 ? `(+${l.length - 1} files)` : "";
+        this.display.patchValue(`${f.name}${count}`);
+        this.addStudentForm.controls['image'].patchValue(this.file_store[0]);
+      } else {
+        this.display.patchValue("");
+      }
+    }
+
 
     public onAddCus(): void {
       this.markAsDirty(this.addStudentForm);
@@ -111,13 +130,13 @@ export class StudentFormComponent implements OnInit {
     }
 
     createStudent(){
-      this._studentService.create(this.addStudentForm.value).subscribe(res => {
+      this._studentService.createWithImage(this.addStudentForm.value, this.addStudentForm.controls.image.value).subscribe(res => {
         this.checkResponse('Information saved successfully', 'create', res);
       });
     }
 
     editStudent(){
-      this._studentService.update(this.addStudentForm.value).subscribe(res => {
+      this._studentService.editWithImage(this.addStudentForm.value, this.addStudentForm.controls.image.value).subscribe(res => {
         this.checkResponse('Information updated successfully', 'edit', res);
       });
     }

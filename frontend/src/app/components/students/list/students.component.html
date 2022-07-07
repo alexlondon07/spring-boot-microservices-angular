@@ -51,6 +51,17 @@
             <td mat-cell *matCellDef="let element"> {{element.email}} </td>
         </ng-container>
 
+        <!-- image -->
+        <ng-container matColumnDef="image">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Image </th>
+            <td mat-cell *matCellDef="let row;">
+                <img *ngIf="row.imageHashCode" [src]="baseEnpoint + row.id + '/uploads/image'" alt="">
+
+                <img *ngIf="!row.imageHashCode" src="/assets/no_image.svg" alt="">
+
+            </td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 

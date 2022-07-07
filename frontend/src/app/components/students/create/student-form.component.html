@@ -49,10 +49,10 @@
                         <mat-form-field class="example-full-width">
                             <input matInput placeholder="Email address" formControlName="email" required>
                             <mat-error *ngIf="addStudentForm.controls.email.hasError('required')">
-                                Please enter email id
+                                Please enter email
                             </mat-error>
                             <mat-error *ngIf="addStudentForm.controls.email.hasError('email')">
-                                Please enter valid email id
+                                Please enter valid email
                             </mat-error>
                             <mat-error *ngIf="addStudentForm.controls.email.hasError('maxlength')">
                                 This field must have at most 90 characters.
@@ -63,13 +63,23 @@
                         </mat-form-field>
                     </div>
                 </mat-grid-tile>
-                <!--                 <mat-grid-tile>
+
+                <mat-grid-tile>
                     <div class="text-inside">
-                        <mat-form-field>
-                            <textarea matInput placeholder="Address"></textarea>
+                        <mat-form-field class="example-full-width">
+                            <mat-label>File matInput</mat-label>
+                            <button mat-icon-button matPrefix (click)="f_input.click()">
+                                <mat-icon>attach_file</mat-icon>
+                            </button>
+                            <input type="text" readonly matInput [formControl]="display" />
+                            <input type="file" value="/assets/no_image.svg" accept="image/png,image/jpeg" formControlName="image" hidden #f_input (change)="handleFileInputChange(f_input.files)" />
+                            <mat-error *ngIf="addStudentForm.controls.image.hasError('required')">
+                                This field is required
+                            </mat-error>
                         </mat-form-field>
                     </div>
-                </mat-grid-tile> -->
+                </mat-grid-tile>
+
             </mat-grid-list>
 
             <div class="btn-sec">

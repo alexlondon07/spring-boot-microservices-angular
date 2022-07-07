@@ -13,6 +13,7 @@ import { StudentService } from "src/app/services/student.service";
 import { MatDialog } from "@angular/material/dialog";
 import { StudentFormComponent } from "../create/student-form.component";
 import { ConfirmDialogComponent } from "../../../shared/confirm-dialog/confirm-dialog.component";
+import { environment } from "src/environments/environment";
 @Component({
   selector: "app-students",
   templateUrl: "./students.component.html",
@@ -26,12 +27,14 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   pageIndex: number = 0;
   pageSize: number = 10;
   pageSizeOptions: number[] = [5, 10, 25, 100];
+  baseEnpoint = `${environment.API_URL}/students/`;
 
   displayedColumns: string[] = [
     "actions",
     "name",
     "lastName",
-    "email"
+    "email",
+    "image"
   ];
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
