@@ -6,6 +6,7 @@ export class Exam {
     name: string;
     createdAt: string;
     questions: Question[] = [];
-    subject: Subject;
+    subjectFather: Subject;
+    subjectChildren: Subject;
     replied: boolean;
 }

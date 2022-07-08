@@ -63,20 +63,6 @@ export class CourseFormComponent implements OnInit {
     this.onCreateGroupFormValueChange();
   }
 
-  handleFileInputChange(l: FileList): void {
-    this.file_store = l;
-    this.file_list = [];
-    if (l.length) {
-      const f = l[0];
-      const count = l.length > 1 ? `(+${l.length - 1} files)` : "";
-      this.display.patchValue(`${f.name}${count}`);
-      this.form.controls['image'].patchValue(this.file_store[0]);
-    } else {
-      this.display.patchValue("");
-    }
-  }
-
-
   public onAddCus(): void {
     this.markAsDirty(this.form);
   }
@@ -96,7 +82,6 @@ export class CourseFormComponent implements OnInit {
 
   private markAsDirty(group: FormGroup): void {
     group.markAsDirty();
-    // tslint:disable-next-line:forin
     for (const i in group.controls) {
       group.controls[i].markAsDirty();
     }

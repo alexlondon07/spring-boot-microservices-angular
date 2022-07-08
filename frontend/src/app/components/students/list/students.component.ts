@@ -14,6 +14,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { StudentFormComponent } from "../create/student-form.component";
 import { ConfirmDialogComponent } from "../../../shared/confirm-dialog/confirm-dialog.component";
 import { environment } from "src/environments/environment";
+import { AppSettings } from "src/app/config/app";
 @Component({
   selector: "app-students",
   templateUrl: "./students.component.html",
@@ -92,7 +93,7 @@ export class StudentsComponent implements OnInit, AfterViewInit {
 
   delete(id: number) {
     const dialogRef = this._dialog.open(ConfirmDialogComponent, {
-      data: 'Are you sure you want to delete the record?',
+      data: AppSettings.GENERIC_CONFIRMATION_MESSAGE_DELETE,
     });
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {

@@ -13,6 +13,7 @@ import { ConfirmDialogComponent } from "../../../shared/confirm-dialog/confirm-d
 import { Course } from "src/app/models/Course";
 import { CourseService } from "src/app/services/course.service";
 import { CourseFormComponent } from '../create/course-form.component';
+import { AppSettings } from "src/app/config/app";
 
 
 @Component({
@@ -78,18 +79,9 @@ export class CoursesComponent implements OnInit, AfterViewInit {
     this.changeDetectorRefs.detectChanges();
   }
 
-/*   getData() {
-    this.service.getAll().subscribe((data) => {
-      this.dataList = data;
-      this.dataSource = new MatTableDataSource(data);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-    });
-  } */
-
   delete(id: number) {
     const dialogRef = this._dialog.open(ConfirmDialogComponent, {
-      data: 'Are you sure you want to delete the record?',
+      data: AppSettings.GENERIC_CONFIRMATION_MESSAGE_DELETE,
     });
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {

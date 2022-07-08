@@ -52,7 +52,10 @@ public class Exam {
     private List<Question> questions = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Subject subject;
+    private Subject subjectFather;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Subject subjectChildren;
 
     @Transient
     private boolean replied;

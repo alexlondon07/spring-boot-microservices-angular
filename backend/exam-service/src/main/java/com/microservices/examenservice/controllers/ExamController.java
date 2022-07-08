@@ -46,6 +46,13 @@ public class ExamController extends CommonController<Exam, ExamService> {
         return examService.findAllPage(pageable);
     }
 
+    @GetMapping("/page/{page}/{size}/{text}")
+    public Page<Exam> indexPageWithText(@PathVariable Integer page, @PathVariable Integer size,
+                                           @PathVariable String text) {
+        Pageable pageable = PageRequest.of(page, size);
+        return examService.findByNameWithPageable(text, pageable);
+    }
+
     @PutMapping("/{id}/exam")
     public ResponseEntity<?> editExam(@Valid @RequestBody Exam exam, @PathVariable Long id,
                                       BindingResult bindingResult) {

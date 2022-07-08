@@ -26,7 +26,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { APP_BASE_HREF } from '@angular/common';
 import { PageHeaderComponent } from './layout/page-header.component';
 import { SalesComponent } from './sales.component';
-import { ExamsComponent } from './components/exams/exams.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -52,6 +51,8 @@ import { StudentFormComponent } from './components/students/create/student-form.
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 import { CoursesComponent } from './components/courses/list/courses.component';
 import { CourseFormComponent } from './components/courses/create/course-form.component';
+import { ExamsComponent } from './components/exams/list/exams.component';
+import { ExamFormComponent } from './components/exams/create/exam-form.component';
 
 const routes: Routes = [
   {
@@ -86,6 +87,10 @@ const routes: Routes = [
       {
         path: 'exams',
         component: ExamsComponent,
+      },
+      {
+        path: 'exams/:id',
+        component: ExamFormComponent,
       },
       {
         path: 'sales',
@@ -153,10 +158,12 @@ const routes: Routes = [
     StudentsComponent,
     StudentFormComponent,
     CourseFormComponent,
+    ExamFormComponent,
+    ExamsComponent,
     ConfirmDialogComponent,
   ],
   bootstrap: [AppComponent],
   providers: [{ provide: APP_BASE_HREF, useValue: '' }],
-  entryComponents: [StudentFormComponent, CourseFormComponent, ConfirmDialogComponent]
+  entryComponents: [StudentFormComponent, CourseFormComponent, ExamFormComponent, ConfirmDialogComponent]
 })
 export class AppModule { }
