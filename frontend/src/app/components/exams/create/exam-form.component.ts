@@ -3,9 +3,18 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppSettings } from 'src/app/config/app';
-import { Course } from 'src/app/models/Course';
-import { CourseService } from 'src/app/services/course.service';
+import { Exam } from 'src/app/models/Exam';
+import { Subject } from 'src/app/models/Subject';
 import { ExamService } from 'src/app/services/exam.service';
+
+export interface Food {
+  value: string;
+  viewValue: string;
+}
+interface Animal {
+  name: string;
+  sound: string;
+}
 
 @Component({
   selector: 'app-exam-form',
@@ -15,12 +24,27 @@ import { ExamService } from 'src/app/services/exam.service';
 export class ExamFormComponent implements OnInit {
 
   titleButton = 'Save';
-  title = 'Add Course';
+  title = 'Add Exam';
   public breakpoint: number; // Breakpoint observer code
   public form: FormGroup;
   wasFormChanged = false;
-  course: Course = new Course();
-
+  exam: Exam = new Exam();
+  dataListSubjects: Subject[] = [];
+  selectedFood: string;
+  selectedFoodModel: string;
+  foods: Food[] = [
+    {value: 'steak-0', viewValue: 'Steak'},
+    {value: 'pizza-1', viewValue: 'Pizza'},
+    {value: 'tacos-2', viewValue: 'Tacos'}
+  ];
+  animalControl = new FormControl<Animal | null>(null, Validators.required);
+  selectFormControl = new FormControl('', Validators.required);
+  animals: Animal[] = [
+    {name: 'Dog', sound: 'Woof!'},
+    {name: 'Cat', sound: 'Meow!'},
+    {name: 'Cow', sound: 'Moo!'},
+    {name: 'Fox', sound: 'Wa-pa-pa-pa-pa-pa-pow!'},
+  ];
   display: FormControl = new FormControl("", Validators.required);
   file_store: FileList;
   file_list: Array<string> = [];
@@ -32,7 +56,8 @@ export class ExamFormComponent implements OnInit {
     public dialogRef: MatDialogRef<ExamFormComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.course = data;
+    this.exam = data.data;
+    this.dataListSubjects = data.subjects;
   }
 
   public ngOnInit(): void {
@@ -41,14 +66,14 @@ export class ExamFormComponent implements OnInit {
   }
 
   createFormBuilder() {
-    if (this.course?.id > 0) {
+    if (this.exam?.id > 0) {
       this.titleButton = 'Edit';
       this.title = 'Edit Exam';
     }
 
     this.form = this.fb.group({
-      id: this.course?.id,
-      name: [this.course?.name, [
+      id: this.exam?.id,
+      name: [this.exam?.name, [
         Validators.required,
         Validators.minLength(5),
         Validators.maxLength(100),

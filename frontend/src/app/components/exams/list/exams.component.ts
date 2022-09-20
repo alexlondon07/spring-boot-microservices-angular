@@ -15,6 +15,7 @@ import { ExamFormComponent } from '../create/exam-form.component';
 import { Exam } from "src/app/models/Exam";
 import { ExamService } from "src/app/services/exam.service";
 import { AppSettings } from "src/app/config/app";
+import { Subject } from '../../../models/Subject';
 @Component({
   selector: 'app-exams',
   templateUrl: './exams.component.html',
@@ -24,6 +25,7 @@ export class ExamsComponent implements OnInit , AfterViewInit {
   dialogRef: MatDialog;
   title = "Exams list";
   dataList: Exam[] = [];
+  dataListSubjects: Subject[] = [];
   totalElements: number = 0;
   pageIndex: number = 0;
   pageSize: number = 10;
@@ -44,6 +46,8 @@ export class ExamsComponent implements OnInit , AfterViewInit {
 
   ngOnInit() {
     this.getDataPage(this.pageIndex, this.pageSize);
+
+    this.getAlllSubjects();
   }
 
   ngAfterViewInit() {
@@ -64,7 +68,10 @@ export class ExamsComponent implements OnInit , AfterViewInit {
     const dialogRef = this._dialog.open(ExamFormComponent, {
       width: "640px",
       disableClose: true,
-      data: data,
+      data: {
+        data: data,
+        subjects: this.dataListSubjects
+      },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if(result.data?.id > 0){
@@ -131,6 +138,17 @@ export class ExamsComponent implements OnInit , AfterViewInit {
     );
   }
 
+  getAllData(): void {
+    this.service.getAll()
+    .subscribe(response => this.manageResponsePages(response));
+  }
+
+  getAlllSubjects() {
+    this.service.getAlllSubjects().subscribe(data => 
+      this.dataListSubjects = data
+      );
+  }
+  
   manageResponsePages(data) {
     this.dataSource = new MatTableDataSource(data["content"]);
     this.dataList = data["content"];

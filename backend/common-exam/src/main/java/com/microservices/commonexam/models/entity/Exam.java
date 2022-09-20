@@ -51,9 +51,11 @@ public class Exam {
             orphanRemoval = true)
     private List<Question> questions = new ArrayList<>();
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private Subject subjectFather;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private Subject subjectChildren;
 
